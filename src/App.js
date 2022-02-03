@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import ID3Writer from 'browser-id3-writer';
 import { saveAs } from 'file-saver';
@@ -6,32 +6,45 @@ import { saveAs } from 'file-saver';
 import TextInput from './TextInput';
 
 const App = () => {
-  const [file, setFile] = useState(null); //
-  const [title, setTitle] = useState(''); //
-  const [duration, setDuration] = useState(''); //
-  const [artist, setArtist] = useState(''); //
-  const [type, setType] = useState('');
-  const [sampleRate, setSampleRate] = useState('');
+  const [file, setFile] = useState(null);
+  const [title, setTitle] = useState('');
+  const [artist, setArtist] = useState('');
   const [genre, setGenre] = useState('');
-  const [tempo, setTempo] = useState(''); //
+  const [tempo, setTempo] = useState('');
   const [affiliates, setAffiliates] = useState('');
   const [ipi, setIpi] = useState('');
-  const [clearance, setClearance] = useState(true);
-  const [oneStop, setOneStop] = useState(true);
+  const [clearance, setClearance] = useState(false);
+  const [oneStop, setOneStop] = useState(false);
   const [splits, setSplits] = useState('');
   const [prl, setPrl] = useState('');
   const [iswc, setIswc] = useState('');
   const [isrc, setIsrc] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [comments, setComments] = useState(''); //
+  const [comments, setComments] = useState('');
+  const [contactName, setContactName] = useState('');
 
-  const handleOneStop = useCallback((e) => {
-    setOneStop(!!e.target.value);
+  const commentText = useMemo(() => (
+`
+Contact: ${contactName} ${phone} ${email}
+Clearance: ${clearance ? 'Yes' : 'No'}
+One-stop: ${oneStop ? 'Yes' : 'No'}
+Splits: ${splits}
+IPI: ${ipi}
+PRL: ${prl}
+ISWC: ${iswc}
+ISRC: ${isrc}
+Genre: ${genre}
+Comments: ${comments}
+`
+  ), [clearance, oneStop, splits, ipi, prl, iswc, isrc, comments, contactName, phone, email, genre]);
+
+  const handleOneStop = useCallback(() => {
+    setOneStop(prev => !prev);
   }, []);
 
-  const handleClearance = useCallback((e) => {
-    setClearance(!!e.target.value);
+  const handleClearance = useCallback(() => {
+    setClearance(prev => !prev);
   }, []);
 
   const handleUpload = useCallback((e) => {
@@ -46,18 +59,15 @@ const App = () => {
         const writer = new ID3Writer(buffer);
         writer
           .setFrame('TIT2', title)
-          .setFrame('TPE1', [artist])
-          .setFrame('TLEN', duration)
+          .setFrame('TPE1', artist.split(', '))
+          .setFrame('TCOM', affiliates.split(', '))
           .setFrame('TBPM', tempo)
+          .setFrame('TCON', genre.split(', '))
           .setFrame('COMM', {
             description: 'Comments',
-            text: comments,
+            text: commentText,
             language: 'eng'
           });
-          // .setFrame('TXXX', {
-          //   description: 'description here',
-          //   value: 'value here'
-          // })
         writer.addTag();
         const blob = writer.getBlob();
         saveAs(blob, title);
@@ -68,7 +78,7 @@ const App = () => {
     if (file) {
       run();
     }
-  }, [artist, comments, duration, file, tempo, title]);
+  }, [artist, file, tempo, title, affiliates, commentText, genre]);
 
   return (
     <Container>
@@ -96,7 +106,7 @@ const App = () => {
             value={title}
           />
         </FieldContainer>
-        <FieldContainer>
+        {/* <FieldContainer>
           <FieldTitle>
             Duration
           </FieldTitle>
@@ -108,7 +118,7 @@ const App = () => {
           <Disclaimer>
             Length of song
           </Disclaimer>
-        </FieldContainer>
+        </FieldContainer> */}
         <FieldContainer>
           <FieldTitle>
             Artist Name
@@ -119,10 +129,10 @@ const App = () => {
             value={artist}
           />
           <Disclaimer>
-            Singer on the track
+            Singer on the track (comma separate multiple artists)
           </Disclaimer>
         </FieldContainer>
-        <FieldContainer>
+        {/* <FieldContainer>
           <FieldTitle>
             Type of Mix
           </FieldTitle>
@@ -134,8 +144,8 @@ const App = () => {
           <Disclaimer>
             Mono/Stereo/Surround
           </Disclaimer>
-        </FieldContainer>
-        <FieldContainer>
+        </FieldContainer> */}
+        {/* <FieldContainer>
           <FieldTitle>
             Sample Rate
           </FieldTitle>
@@ -144,7 +154,7 @@ const App = () => {
             onChange={setSampleRate}
             value={sampleRate}
           />
-        </FieldContainer>
+        </FieldContainer> */}
         <FieldContainer>
           <FieldTitle>
             Music Genre
@@ -154,6 +164,9 @@ const App = () => {
             onChange={setGenre}
             value={genre}
           />
+          <Disclaimer>
+            Comma separate multiple genres
+          </Disclaimer>
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
@@ -175,7 +188,7 @@ const App = () => {
             value={affiliates}
           />
           <Disclaimer>
-            Example: John Doe Merf Music publishing BMI
+            Example: John Doe Merf Music publishing BMI (comma separate multiple composers)
           </Disclaimer>
         </FieldContainer>
         <FieldContainer>
@@ -193,7 +206,7 @@ const App = () => {
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          IPI Number
+          Splits/Shares
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -254,6 +267,16 @@ const App = () => {
             disabled={file === null}
             onChange={setIsrc}
             value={isrc}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          Contact Name
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setContactName}
+            value={contactName}
           />
         </FieldContainer>
         <FieldContainer>

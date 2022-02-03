@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 const TextInput = ({
+  className,
   disabled, 
   onChange,
   value
@@ -12,6 +13,7 @@ const TextInput = ({
 
   return (
     <input
+      className={className}
       disabled={disabled}
       onChange={handleChange}
       value={value}

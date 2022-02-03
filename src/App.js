@@ -6,14 +6,14 @@ import { saveAs } from 'file-saver';
 import TextInput from './TextInput';
 
 const App = () => {
-  const [file, setFile] = useState(null);
-  const [title, setTitle] = useState('');
-  const [duration, setDuration] = useState('');
-  const [artist, setArtist] = useState('');
+  const [file, setFile] = useState(null); //
+  const [title, setTitle] = useState(''); //
+  const [duration, setDuration] = useState(''); //
+  const [artist, setArtist] = useState(''); //
   const [type, setType] = useState('');
   const [sampleRate, setSampleRate] = useState('');
   const [genre, setGenre] = useState('');
-  const [tempo, setTempo] = useState('');
+  const [tempo, setTempo] = useState(''); //
   const [affiliates, setAffiliates] = useState('');
   const [ipi, setIpi] = useState('');
   const [clearance, setClearance] = useState(true);
@@ -24,34 +24,51 @@ const App = () => {
   const [isrc, setIsrc] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [comments, setComments] = useState('');
+  const [comments, setComments] = useState(''); //
+
+  const handleOneStop = useCallback((e) => {
+    setOneStop(!!e.target.value);
+  }, []);
+
+  const handleClearance = useCallback((e) => {
+    setClearance(!!e.target.value);
+  }, []);
 
   const handleUpload = useCallback((e) => {
     const value = e.target.files[0];
     setFile(value);
   }, []);
 
-  const handleSave = useCallback((e) => {
+  const handleSave = useCallback(() => {
     const run = async () => {
       try {
-        const file = e.target.files[0];
         const buffer = await file.arrayBuffer();
         const writer = new ID3Writer(buffer);
-        writer.setFrame('TIT2', 'Home')
-          .setFrame('TPE1', ['Eminem', '50 Cent'])
-          .setFrame('TALB', 'Friday Night Lights')
-          .setFrame('TYER', 2004);
+        writer
+          .setFrame('TIT2', title)
+          .setFrame('TPE1', [artist])
+          .setFrame('TLEN', duration)
+          .setFrame('TBPM', tempo)
+          .setFrame('COMM', {
+            description: 'Comments',
+            text: comments,
+            language: 'eng'
+          });
+          // .setFrame('TXXX', {
+          //   description: 'description here',
+          //   value: 'value here'
+          // })
         writer.addTag();
-        // const taggedSongBuffer = writer.arrayBuffer;
         const blob = writer.getBlob();
-        // const url = writer.getURL();
-        saveAs(blob, 'song with tags.mp3');
+        saveAs(blob, title);
       } catch (error) {
         console.log('Error uploading: ', error);
       }
     };
-    run();
-  }, []);
+    if (file) {
+      run();
+    }
+  }, [artist, comments, duration, file, tempo, title]);
 
   return (
     <Container>
@@ -89,18 +106,188 @@ const App = () => {
             value={duration}
           />
           <Disclaimer>
-            * Length of song
+            Length of song
           </Disclaimer>
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-            Artist
+            Artist Name
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
             onChange={setArtist}
             value={artist}
           />
+          <Disclaimer>
+            Singer on the track
+          </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+            Type of Mix
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setType}
+            value={type}
+          />
+          <Disclaimer>
+            Mono/Stereo/Surround
+          </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+            Sample Rate
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setSampleRate}
+            value={sampleRate}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+            Music Genre
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setGenre}
+            value={genre}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+            Tempo
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setTempo}
+            value={tempo}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          Composers, Affiliates, Publishing
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setAffiliates}
+            value={affiliates}
+          />
+          <Disclaimer>
+            Example: John Doe Merf Music publishing BMI
+          </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          IPI Number
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setIpi}
+            value={ipi}
+          />
+          <Disclaimer>
+            Optional
+          </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          IPI Number
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setSplits}
+            value={splits}
+          />
+          <Disclaimer>
+            Example: 50%/50% or 33.3%/33.3%/34%
+          </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          Clearance from all songwriters and publishers
+          </FieldTitle>
+          <FieldCheckboxInput
+            disabled={file === null}
+            type="checkbox"
+            onChange={handleClearance}
+            value={clearance}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          One-stop Shop
+          </FieldTitle>
+          <FieldCheckboxInput
+            disabled={file === null}
+            type="checkbox"
+            onChange={handleOneStop}
+            value={oneStop}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          PRL Work Number
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setPrl}
+            value={prl}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          ISWC Number
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setIswc}
+            value={iswc}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          ISRC Number
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setIsrc}
+            value={isrc}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          Email Address
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setEmail}
+            value={email}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          Phone Number
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setPhone}
+            value={phone}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+          Comments
+          </FieldTitle>
+          <FieldTextInput
+            disabled={file === null}
+            onChange={setComments}
+            value={comments}
+          />
+          <Disclaimer>
+            Any comments you'd like about the song
+          </Disclaimer>
         </FieldContainer>
         <SaveButton
           disabled={file === null}
@@ -119,6 +306,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   color: #333;
+  font-size: 14px
 `;
 
 const Header = styled.h1`
@@ -126,44 +314,50 @@ const Header = styled.h1`
 `;
 
 const FormContainer = styled.div`
-  width: 80%;
+  min-width: 70%;
+  max-width: 95%;
   background-color: #ddd;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
   align-items: center;
+  margin-bottom: 60px;
 `;
 
 const FieldContainer = styled.div`
   display: flex;
-  margin-top: 15px;
+  flex-direction: column;
+  margin-top: 20px;
 `;
 
 const FieldTitle = styled.div`
-  display: flex;
   font-weight: bold;
-  flex-basis: 25%;
-  align-items: center;
+  margin-bottom: 5px;
 `;
 
 const FieldFileInput = styled.input`
-  flex-basis: 45%;
+  
 `; 
 
 const FieldTextInput = styled(TextInput)`
-  flex-basis: 45%;
+  border: 1px solid #aaa;
+  outline-color: #777;
+  height: 16px;
+  padding: 5px 10px;
+`; 
+
+const FieldCheckboxInput = styled.input`
+
 `; 
 
 const SaveButton = styled.button`
-  margin-top: 10px;
+  margin-top: 30px;
 `;
 
 const Disclaimer = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 10px;
-  margin-left: 10px;
+  font-size: 11px;
+  margin-top: 5px;
 `;
 
 export default App;

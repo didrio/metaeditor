@@ -4,9 +4,11 @@ import ID3Writer from 'browser-id3-writer';
 import { saveAs } from 'file-saver';
 
 import TextInput from './TextInput';
+import ImageInput from './ImageInput';
 
 const App = () => {
   const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
   const [genre, setGenre] = useState('');
@@ -56,6 +58,7 @@ Comments: ${comments}
     const run = async () => {
       try {
         const buffer = await file.arrayBuffer();
+        const imageBuffer = await image.arrayBuffer();
         const writer = new ID3Writer(buffer);
         writer
           .setFrame('TIT2', title)
@@ -67,7 +70,12 @@ Comments: ${comments}
             description: 'Comments',
             text: commentText,
             language: 'eng'
-          });
+          })
+          .setFrame('APIC', {
+            type: 3,
+            data: imageBuffer,
+            description: 'Artwork'
+          })
         writer.addTag();
         const blob = writer.getBlob();
         saveAs(blob, title);
@@ -78,7 +86,7 @@ Comments: ${comments}
     if (file) {
       run();
     }
-  }, [artist, file, tempo, title, affiliates, commentText, genre]);
+  }, [artist, file, tempo, title, affiliates, commentText, genre, image]);
 
   return (
     <Container>
@@ -180,7 +188,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Composers, Affiliates, Publishing
+            Composers, Affiliates, Publishing
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -193,7 +201,16 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          IPI Number
+            Artwork
+          </FieldTitle>
+          <FieldImageInput
+            disabled={file === null}
+            onChange={setImage}
+          />
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
+            IPI Number
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -219,7 +236,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Clearance from all songwriters and publishers
+            Clearance from all songwriters and publishers
           </FieldTitle>
           <FieldCheckboxInput
             disabled={file === null}
@@ -230,7 +247,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          One-stop Shop
+            One-stop Shop
           </FieldTitle>
           <FieldCheckboxInput
             disabled={file === null}
@@ -241,7 +258,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          PRL Work Number
+            PRL Work Number
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -251,7 +268,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          ISWC Number
+            ISWC Number
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -261,7 +278,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          ISRC Number
+            ISRC Number
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -271,7 +288,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Contact Name
+            Contact Name
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -281,7 +298,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Email Address
+            Email Address
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -291,7 +308,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Phone Number
+            Phone Number
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -301,7 +318,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Comments
+            Comments
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -368,6 +385,13 @@ const FieldTextInput = styled(TextInput)`
   outline-color: #777;
   height: 16px;
   padding: 5px 10px;
+`; 
+
+const FieldImageInput = styled(ImageInput)`
+  // border: 1px solid #aaa;
+  // outline-color: #777;
+  // height: 16px;
+  // padding: 5px 10px;
 `; 
 
 const FieldCheckboxInput = styled.input`

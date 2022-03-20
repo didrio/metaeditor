@@ -1,9 +1,18 @@
+import { useEffect } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 function Login() {
+  const user = useAuth();
   const firebase = useFirebase();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/portal');
+    }
+  }, [user, navigate]);
 
   const signInWithGoogle = () => {
     firebase
@@ -15,6 +24,10 @@ function Login() {
         navigate('/app');
       });
   };
+
+  if (user) {
+    return null;
+  }
 
   return (
     <div>

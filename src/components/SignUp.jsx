@@ -1,14 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFirebase } from 'react-redux-firebase';
 import isEmpty from 'lodash/isEmpty';
 import TextInput from './common/TextInput';
 import Button from './common/Button';
+import ErrorMessage from './common/ErrorMessage';
+import { DEFAULT_USER_DATA } from '../constants';
+import { getErrorMessage } from '../utils';
+import useAuth from '../hooks/useAuth';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
+  const user = useAuth();
+  const navigate = useNavigate();
   const firebase = useFirebase();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/portal');
+    }
+  }, [user, navigate]);
 
   const handleEmailChange = (value) => {
     setEmail(value);
@@ -19,16 +33,20 @@ function SignUp() {
   };
 
   const handleSignUp = useCallback(() => {
-    firebase
-      .createUser({
-        email, password,
-      }, {
-        codes: [],
-      });
+    const run = async () => {
+      try {
+        await firebase.createUser({ email, password }, DEFAULT_USER_DATA);
+      } catch (error) {
+        setErrorMessage(getErrorMessage(error));
+      }
+      setEmail('');
+      setPassword('');
+    };
+    run();
   }, [email, firebase, password]);
 
   const handleKeyDown = useCallback(({ code }) => {
-    if (code === 13 && !isEmpty(email) && !isEmpty(password)) {
+    if (code === 'Enter' && !isEmpty(email) && !isEmpty(password)) {
       handleSignUp();
     }
   }, [handleSignUp, email, password]);
@@ -44,8 +62,15 @@ function SignUp() {
     };
   }, [handleKeyDown]);
 
+  if (user) {
+    return null;
+  }
+
   return (
     <div>
+      <ErrorMessage>
+        {errorMessage}
+      </ErrorMessage>
       <TextInput
         onChange={handleEmailChange}
         type="email"

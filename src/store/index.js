@@ -3,7 +3,7 @@ import { actionTypes, firebaseReducer } from 'react-redux-firebase';
 import { firestoreReducer } from 'redux-firestore';
 import counterReducer from './slices/counter';
 
-const rootReducer = configureStore({
+const store = configureStore({
   reducer: {
     counter: counterReducer,
     firebase: firebaseReducer,
@@ -16,4 +16,4 @@ const rootReducer = configureStore({
   }),
 });
 
-export default rootReducer;
+export default store;

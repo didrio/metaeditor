@@ -1,9 +1,9 @@
 import { useFirebase } from 'react-redux-firebase';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const firebase = useFirebase();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const signInWithGoogle = () => {
     firebase
@@ -12,7 +12,7 @@ function Login() {
         type: 'popup',
       })
       .then(() => {
-        history.push('/app');
+        navigate('/app');
       });
   };
 

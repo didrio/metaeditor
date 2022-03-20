@@ -1,32 +1,40 @@
-import { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 function TextInput({
-  className,
   disabled,
   onChange,
+  type,
   value,
 }) {
-  const handleChange = useCallback((e) => {
+  const handleChange = (e) => {
     const { value: inputValue } = e.target;
-    onChange(inputValue);
-  }, [onChange]);
+    onChange(inputValue, e);
+  };
 
   return (
-    <input
-      className={className}
+    <Container
       disabled={disabled}
       onChange={handleChange}
+      type={type}
       value={value}
     />
   );
 }
 
+const Container = styled.input`
+  background-color: skyblue;
+`;
+
 TextInput.propTypes = {
-  className: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+};
+
+TextInput.defaultProps = {
+  disabled: false,
 };
 
 export default TextInput;

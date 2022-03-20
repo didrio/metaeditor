@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import ID3Writer from 'browser-id3-writer';
 import { saveAs } from 'file-saver';
 
-import TextInput from './TextInput';
-import ImageInput from './ImageInput';
+import TextInput from './common/TextInput';
+import ImageInput from './common/ImageInput';
 
 function App() {
   const [file, setFile] = useState(null);

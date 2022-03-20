@@ -1,15 +1,28 @@
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestoreConnect, isLoaded, isEmpty as authIsEmpty } from 'react-redux-firebase';
 import AddTodo from './AddTodo';
 import ToDoItem from './TodoItem';
 
 function Todos() {
-  const { displayName, uid } = useSelector((state) => state.firebase.auth);
+  const auth = useSelector((state) => state.firebase.auth);
+  const { displayName, uid } = auth;
   useFirestoreConnect({
     collection: `users/${uid}/todos`,
     storeAs: 'todos',
   });
   const todos = useSelector((state) => state.firestore.data.todos);
+
+  if (!isLoaded(auth) || authIsEmpty(auth)) {
+    return (
+      <Navigate
+        replace
+        to={{
+          pathname: '/',
+        }}
+      />
+    );
+  }
 
   return (
     <div>

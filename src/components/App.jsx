@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import TextInput from './TextInput';
 import ImageInput from './ImageInput';
 
-const App = () => {
+function App() {
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
@@ -26,8 +26,9 @@ const App = () => {
   const [comments, setComments] = useState('');
   const [contactName, setContactName] = useState('');
 
-  const commentText = useMemo(() => (
-`
+  const commentText = useMemo(
+    () => (
+      `
 Contact: ${contactName} ${phone} ${email}
 Clearance: ${clearance ? 'Yes' : 'No'}
 One-stop: ${oneStop ? 'Yes' : 'No'}
@@ -39,14 +40,16 @@ ISRC: ${isrc}
 Genre: ${genre}
 Comments: ${comments}
 `
-  ), [clearance, oneStop, splits, ipi, prl, iswc, isrc, comments, contactName, phone, email, genre]);
+    ),
+    [clearance, oneStop, splits, ipi, prl, iswc, isrc, comments, contactName, phone, email, genre],
+  );
 
   const handleOneStop = useCallback(() => {
-    setOneStop(prev => !prev);
+    setOneStop((prev) => !prev);
   }, []);
 
   const handleClearance = useCallback(() => {
-    setClearance(prev => !prev);
+    setClearance((prev) => !prev);
   }, []);
 
   const handleUpload = useCallback((e) => {
@@ -69,17 +72,18 @@ Comments: ${comments}
           .setFrame('COMM', {
             description: 'Comments',
             text: commentText,
-            language: 'eng'
+            language: 'eng',
           })
           .setFrame('APIC', {
             type: 3,
             data: imageBuffer,
-            description: 'Artwork'
-          })
+            description: 'Artwork',
+          });
         writer.addTag();
         const blob = writer.getBlob();
         saveAs(blob, title);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log('Error uploading: ', error);
       }
     };
@@ -223,7 +227,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-          Splits/Shares
+            Splits/Shares
           </FieldTitle>
           <FieldTextInput
             disabled={file === null}
@@ -326,7 +330,7 @@ Comments: ${comments}
             value={comments}
           />
           <Disclaimer>
-            Any comments you'd like about the song
+            Any comments you&apos;d like about the song
           </Disclaimer>
         </FieldContainer>
         <SaveButton
@@ -338,7 +342,7 @@ Comments: ${comments}
       </FormContainer>
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;
@@ -378,25 +382,25 @@ const FieldTitle = styled.div`
 
 const FieldFileInput = styled.input`
   
-`; 
+`;
 
 const FieldTextInput = styled(TextInput)`
   border: 1px solid #aaa;
   outline-color: #777;
   height: 16px;
   padding: 5px 10px;
-`; 
+`;
 
 const FieldImageInput = styled(ImageInput)`
   // border: 1px solid #aaa;
   // outline-color: #777;
   // height: 16px;
   // padding: 5px 10px;
-`; 
+`;
 
 const FieldCheckboxInput = styled.input`
 
-`; 
+`;
 
 const SaveButton = styled.button`
   margin-top: 30px;

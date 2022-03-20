@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
+import PropTypes from 'prop-types';
 
-const ImageInput = ({
+function ImageInput({
   className,
-  disabled, 
-  onChange
-}) => {
+  disabled,
+  onChange,
+}) {
   const handleChange = useCallback((e) => {
     const image = e.target.files[0];
     onChange(image);
@@ -18,7 +19,13 @@ const ImageInput = ({
       onChange={handleChange}
       type="file"
     />
-  )
+  );
+}
+
+ImageInput.propTypes = {
+  className: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default ImageInput;

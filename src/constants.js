@@ -7,5 +7,7 @@ export const ERROR_MESSAGES = {
 };
 
 export const COLOR_BLACK = '#000000';
-export const COLOR_LIGHT_GRAY = '#f5f5f5d9';
+export const COLOR_BLUE = '2a64f6d9';
+export const COLOR_DARK_GRAY = '#a0a0a0';
+export const COLOR_LIGHT_GRAY = '#f0f0f0';
 export const COLOR_WHITE = '#ffffff';

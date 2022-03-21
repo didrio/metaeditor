@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFirebase } from 'react-redux-firebase';
 import isEmpty from 'lodash/isEmpty';
+import styled from 'styled-components';
 import TextInput from './common/TextInput';
 import Button from './common/Button';
 import ErrorMessage from './common/ErrorMessage';
+import FlexGroup from './common/FlexGroup';
 import { DEFAULT_USER_DATA } from '../constants';
 import { getErrorMessage } from '../utils';
 import useAuth from '../hooks/useAuth';
@@ -14,15 +16,15 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const user = useAuth();
+  const auth = useAuth();
   const navigate = useNavigate();
   const firebase = useFirebase();
 
   useEffect(() => {
-    if (user) {
-      navigate('/portal');
+    if (auth) {
+      navigate('/profile');
     }
-  }, [user, navigate]);
+  }, [auth, navigate]);
 
   const handleEmailChange = (value) => {
     setEmail(value);
@@ -62,32 +64,61 @@ function SignUp() {
     };
   }, [handleKeyDown]);
 
-  if (user) {
+  if (auth) {
     return null;
   }
 
   return (
-    <div>
+    <Container
+      vertical
+    >
       <ErrorMessage>
         {errorMessage}
       </ErrorMessage>
+      <Label>
+        Email
+      </Label>
       <TextInput
         onChange={handleEmailChange}
         type="email"
         value={email}
       />
+      <Spacer />
+      <Label>
+        Password
+      </Label>
       <TextInput
         onChange={handlePasswordChange}
         type="password"
         value={password}
       />
+      <Spacer />
       <Button
         onClick={handleSignUp}
       >
         Register
       </Button>
-    </div>
+    </Container>
   );
 }
+
+const Container = styled(FlexGroup)`
+  align-items: center;
+  margin-top: 30px;
+  padding-left: 25%;
+  padding-right: 25%;
+`;
+
+const Label = styled(FlexGroup)`
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+`;
+
+const Spacer = styled.div`
+  height: 40px;
+`;
 
 export default SignUp;

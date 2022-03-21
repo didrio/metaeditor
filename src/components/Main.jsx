@@ -5,13 +5,10 @@ import FlexGroup from './common/FlexGroup';
 import Landing from './Landing';
 import Login from './Login';
 import Logo from './Logo';
-import Portal from './Portal';
+import Profile from './Profile';
 import NavBar from './NavBar';
 import SignUp from './SignUp';
-import {
-  COLOR_LIGHT_GRAY,
-  COLOR_WHITE,
-} from '../constants';
+import { COLOR_LIGHT_GRAY } from '../constants';
 
 function Main() {
   return (
@@ -25,36 +22,38 @@ function Main() {
           <Logo />
           <NavBar />
         </Header>
-        <div>
-          hi
-        </div>
-        <div>
-          header
-        </div>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/app" element={<App />} />
-          <Route path="/portal" element={<Portal />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-        <div>
-          footer
-        </div>
+        <Body
+          vertical
+        >
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/app" element={<App />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </Body>
       </Container>
     </Background>
   );
 }
 
 const Background = styled(FlexGroup)`
-  background-color: ${COLOR_WHITE};
   margin-left: 10vw;
   margin-right: 10vw;
+  height: 100%;
   width: 80vw;
+  flex-grow: 1;
 `;
 
 const Container = styled(FlexGroup)`
-  
+  justify-content: space-betweek;
+  height: 100%;
+`;
+
+const Body = styled(FlexGroup)`
+  padding: 30px;
+  width: 100%;
 `;
 
 const Header = styled(FlexGroup)`

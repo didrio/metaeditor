@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {
+  COLOR_DARK_GRAY,
+  COLOR_WHITE,
+} from '../../constants';
 
 function TextInput({
   disabled,
@@ -23,18 +27,26 @@ function TextInput({
 }
 
 const Container = styled.input`
-  background-color: skyblue;
+  background-color: ${COLOR_WHITE};
+  border: 1px solid ${COLOR_DARK_GRAY};
+  border-radius: 2px;
+  box-sizing: border-box;
+  height: 30px;
+  width: 100%;
+  padding: 5px 15px;
+  outline: none;
 `;
 
 TextInput.propTypes = {
   disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   value: PropTypes.string.isRequired,
 };
 
 TextInput.defaultProps = {
   disabled: false,
+  type: 'text',
 };
 
 export default TextInput;

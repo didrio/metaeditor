@@ -1,10 +1,13 @@
-import { useCallback, useState, useMemo } from 'react';
+import {
+  useCallback, useState, useMemo, useEffect,
+} from 'react';
 import styled from 'styled-components';
 import ID3Writer from 'browser-id3-writer';
 import { saveAs } from 'file-saver';
-
+import { useNavigate } from 'react-router-dom';
 import TextInput from './common/TextInput';
 import ImageInput from './common/ImageInput';
+import useAuth from '../hooks/useAuth';
 
 function App() {
   const [file, setFile] = useState(null);
@@ -25,6 +28,15 @@ function App() {
   const [phone, setPhone] = useState('');
   const [comments, setComments] = useState('');
   const [contactName, setContactName] = useState('');
+
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth === false) {
+      navigate('/');
+    }
+  }, [auth, navigate]);
 
   const commentText = useMemo(
     () => (
@@ -95,9 +107,17 @@ Comments: ${comments}
   return (
     <Container>
       <Header>
-        MP3 ID3 Tag Editor
+        Meta Data Editor
       </Header>
       <FormContainer>
+        <FieldContainer>
+          <FieldTitle>
+            Credits
+          </FieldTitle>
+          <input
+            type="select"
+          />
+        </FieldContainer>
         <FieldContainer>
           <FieldTitle>
             Upload MP3

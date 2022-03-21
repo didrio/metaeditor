@@ -17,7 +17,10 @@ function Button({
 }
 
 const Container = styled.button`
-  background-color: skyblue;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 35px;
+  width: 200px;
 `;
 
 Button.propTypes = {

@@ -11,7 +11,7 @@ const useAuth = () => {
       if (user) {
         setAuthUser(user);
       } else {
-        setAuthUser(null);
+        setAuthUser(false);
       }
     });
     return () => {

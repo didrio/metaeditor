@@ -37,7 +37,7 @@ function SignUp() {
   const handleSignUp = useCallback(() => {
     const run = async () => {
       try {
-        await firebase.createUser({ email, password }, DEFAULT_USER_DATA);
+        await firebase.createUser({ email, password }, { ...DEFAULT_USER_DATA, email });
       } catch (error) {
         setErrorMessage(getErrorMessage(error));
       }

@@ -7,7 +7,13 @@ import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
 import TextInput from './common/TextInput';
 import ImageInput from './common/ImageInput';
+import LoadingAnimation from './common/LoadingAnimation';
 import useAuth from '../hooks/useAuth';
+import useUser from '../hooks/useUser';
+import {
+  COLOR_BLACK,
+  COLOR_LIGHT_GRAY,
+} from '../constants';
 
 function App() {
   const [file, setFile] = useState(null);
@@ -28,9 +34,16 @@ function App() {
   const [phone, setPhone] = useState('');
   const [comments, setComments] = useState('');
   const [contactName, setContactName] = useState('');
+  const [credits, setCredits] = useState(false);
 
   const auth = useAuth();
   const navigate = useNavigate();
+  const user = useUser();
+
+  useEffect(() => {
+    const userCredits = user?.credits ?? null;
+    setCredits(userCredits);
+  }, [user]);
 
   useEffect(() => {
     if (auth === false) {
@@ -110,6 +123,21 @@ Comments: ${comments}
         Meta Data Editor
       </Header>
       <FormContainer>
+        <CreditsContainer>
+          {credits === null ? (
+            <LoadingAnimation />
+          ) : (
+            <CreditsText>
+              You have
+              {' '}
+              <CreditsAmount>
+                {credits}
+              </CreditsAmount>
+              {' '}
+              credits remaining.
+            </CreditsText>
+          )}
+        </CreditsContainer>
         <FieldContainer>
           <FieldTitle>
             Credits
@@ -369,24 +397,27 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  color: #333;
+  color: ${COLOR_BLACK};
   font-size: 14px
 `;
 
 const Header = styled.h1`
   display: inline;
+  margin-top: 0px;
+  margin-bottom: 10px;
 `;
 
 const FormContainer = styled.div`
   min-width: 70%;
   max-width: 95%;
-  background-color: #ddd;
+  background-color: ${COLOR_LIGHT_GRAY};
   padding: 20px;
   border-radius: 5px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
   align-items: center;
   margin-bottom: 60px;
+  margin-top: 20px;
 `;
 
 const FieldContainer = styled.div`
@@ -429,6 +460,21 @@ const SaveButton = styled.button`
 const Disclaimer = styled.div`
   font-size: 11px;
   margin-top: 5px;
+`;
+
+const CreditsContainer = styled(FieldContainer)`
+  min-height: 30px;
+  height: 30px;
+  justify-content: center;
+  margin-bottom: 40px;
+`;
+
+const CreditsText = styled.div`
+  font-size: 18px;
+`;
+
+const CreditsAmount = styled.span`
+  font-weight: bold;
 `;
 
 export default App;

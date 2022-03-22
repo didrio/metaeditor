@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import Admin from './Admin';
 import App from './App';
 import FlexGroup from './common/FlexGroup';
 import Landing from './Landing';
@@ -27,6 +28,7 @@ function Main() {
         >
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/app" element={<App />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
@@ -52,6 +54,7 @@ const Container = styled(FlexGroup)`
 `;
 
 const Body = styled(FlexGroup)`
+  box-sizing: border-box;
   padding: 30px;
   width: 100%;
 `;

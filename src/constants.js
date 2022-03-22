@@ -1,5 +1,7 @@
 export const DEFAULT_USER_DATA = {
-  codes: [],
+  admin: false,
+  credits: 0,
+  displayName: '',
 };
 
 export const ERROR_MESSAGES = {

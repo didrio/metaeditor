@@ -4,6 +4,7 @@ import FlexGroup from './common/FlexGroup';
 import RouterLink from './common/RouterLink';
 import { COLOR_LIGHT_GRAY } from '../constants';
 import useAuth from '../hooks/useAuth';
+import useUser from '../hooks/useUser';
 
 function ProfileDropdown() {
   const firebase = useFirebase();
@@ -15,19 +16,29 @@ function ProfileDropdown() {
     }
   };
 
+  const user = useUser();
+  const admin = user?.admin ?? false;
+
   return (
     <Container
       vertical
     >
-      <Link
-        to="profile"
-      >
-        Edit Profile
-      </Link>
+      {!admin ? null : (
+        <AdminLink
+          to="admin"
+        >
+          Admin
+        </AdminLink>
+      )}
       <Link
         to="app"
       >
         Meta Data Editor
+      </Link>
+      <Link
+        to="profile"
+      >
+        Edit Profile
       </Link>
       <Logout
         onClick={handleLogout}
@@ -45,6 +56,12 @@ const Container = styled(FlexGroup)`
 
 const Link = styled(RouterLink)`
   margin-bottom: 10px;
+`;
+
+const AdminLink = styled(Link)`
+  & > a {
+    color: red;
+  }
 `;
 
 const Logout = styled(FlexGroup)`

@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 function Button({
+  className,
   children,
   disabled,
   onClick,
 }) {
   return (
     <Container
+      className={className}
       disabled={disabled}
       onClick={onClick}
     >
@@ -25,11 +27,13 @@ const Container = styled.button`
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
+  className: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
 };
 
 Button.defaultProps = {
+  className: '',
   disabled: false,
 };
 

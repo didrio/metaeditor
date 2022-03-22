@@ -475,6 +475,7 @@ const FormContainer = styled.div`
 const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
   margin-top: 30px;
 `;
 

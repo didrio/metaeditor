@@ -59,16 +59,16 @@ const Container = styled.button`
     transition: all 0.3s ease;
   }
 
-  &:hover:enabled {
+  &:enabled:hover {
     color: #fff;
   }
 
-  &:hover:after:enabled {
+  &:enabled:hover:after {
     top: 0;
     height: 100%;
   }
 
-  &:active:enabled {
+  &:enabled:active {
     top: 2px;
   }
 

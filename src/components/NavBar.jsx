@@ -6,6 +6,8 @@ import RouterLink from './common/RouterLink';
 import useAuth from '../hooks/useAuth';
 import ProfileDropdown from './ProfileDropdown';
 
+const getDropdownHeight = ({ active }) => (active ? 'auto' : 'none');
+
 function NavBar() {
   const [dropdownActive, setDropdownActive] = useState(false);
   const auth = useAuth();
@@ -27,11 +29,11 @@ function NavBar() {
         <ProfileContainer>
           Profile
         </ProfileContainer>
-        {!dropdownActive ? null : (
-          <DropdownContainer>
-            <ProfileDropdown />
-          </DropdownContainer>
-        )}
+        <DropdownContainer
+          active={dropdownActive}
+        >
+          <ProfileDropdown />
+        </DropdownContainer>
       </Container>
     ) : (
       <Container>
@@ -65,6 +67,7 @@ const DropdownContainer = styled(FlexGroup)`
   left: 60px;
   top: 50px;
   width: 300px;
+  display: ${getDropdownHeight};
 `;
 
 const ProfileContainer = styled(FlexItem)`

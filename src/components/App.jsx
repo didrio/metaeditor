@@ -5,15 +5,25 @@ import styled from 'styled-components';
 import ID3Writer from 'browser-id3-writer';
 import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
+import { useFirebase } from 'react-redux-firebase';
+import isEmpty from 'lodash/isEmpty';
 import TextInput from './common/TextInput';
 import ImageInput from './common/ImageInput';
 import LoadingAnimation from './common/LoadingAnimation';
+import FlexGroup from './common/FlexGroup';
+import Button from './common/Button';
 import useAuth from '../hooks/useAuth';
 import useUser from '../hooks/useUser';
 import {
   COLOR_BLACK,
   COLOR_LIGHT_GRAY,
+  COLOR_RED,
 } from '../constants';
+
+const confirmMessage = `
+Downloading the .mp3 file will use 1 of your credits.
+Ensure all your fields are correct before downloading.
+`;
 
 function App() {
   const [file, setFile] = useState(null);
@@ -37,6 +47,7 @@ function App() {
   const [credits, setCredits] = useState(false);
 
   const auth = useAuth();
+  const firebase = useFirebase();
   const navigate = useNavigate();
   const user = useUser();
 
@@ -82,40 +93,92 @@ Comments: ${comments}
     setFile(value);
   }, []);
 
+  const deductCredit = useCallback(() => {
+    const run = async () => {
+      const userEmail = auth?.email ?? '';
+      if (!isEmpty(userEmail)) {
+        const db = firebase.firestore();
+        const query = await db.collection('users').where('email', '==', userEmail).get();
+        if (!isEmpty(query?.docs ?? [])) {
+          const docRef = query.docs[0];
+          await docRef.ref.update({ credits: credits - 1 });
+          setCredits((prev) => prev - 1);
+          return true;
+        }
+        return false;
+      }
+      return false;
+    };
+    return run();
+  }, [auth, credits, firebase]);
+
   const handleSave = useCallback(() => {
     const run = async () => {
       try {
-        const buffer = await file.arrayBuffer();
-        const imageBuffer = await image.arrayBuffer();
-        const writer = new ID3Writer(buffer);
-        writer
-          .setFrame('TIT2', title)
-          .setFrame('TPE1', artist.split(', '))
-          .setFrame('TCOM', affiliates.split(', '))
-          .setFrame('TBPM', tempo)
-          .setFrame('TCON', genre.split(', '))
-          .setFrame('COMM', {
-            description: 'Comments',
-            text: commentText,
-            language: 'eng',
-          })
-          .setFrame('APIC', {
-            type: 3,
-            data: imageBuffer,
-            description: 'Artwork',
-          });
-        writer.addTag();
-        const blob = writer.getBlob();
-        saveAs(blob, title);
+        // eslint-disable-next-line no-alert
+        const confirmed = window.confirm(confirmMessage);
+        if (confirmed) {
+          const success = deductCredit();
+          if (success) {
+            const buffer = await file.arrayBuffer();
+            let imageBuffer;
+            if (image !== null) {
+              imageBuffer = await image.arrayBuffer();
+            }
+            const writer = new ID3Writer(buffer);
+            writer
+              .setFrame('TIT2', title)
+              .setFrame('TPE1', artist.split(', '))
+              .setFrame('TCOM', affiliates.split(', '))
+              .setFrame('TBPM', tempo)
+              .setFrame('TCON', genre.split(', '));
+            if (!isEmpty(commentText)) {
+              writer.setFrame('COMM', {
+                description: 'Comments',
+                text: commentText,
+                language: 'eng',
+              });
+            }
+            if (imageBuffer) {
+              writer.setFrame('APIC', {
+                type: 3,
+                data: imageBuffer,
+                description: 'Artwork',
+              });
+            }
+            writer.addTag();
+            const blob = writer.getBlob();
+            saveAs(blob, title);
+          }
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.log('Error uploading: ', error);
+        console.log('Error downloading: ', error);
       }
     };
     if (file) {
       run();
     }
-  }, [artist, file, tempo, title, affiliates, commentText, genre, image]);
+  }, [
+    affiliates,
+    artist,
+    commentText,
+    deductCredit,
+    file,
+    genre,
+    image,
+    tempo,
+    title,
+  ]);
+
+  const canSave = useMemo(() => (
+    file !== null
+    && !isEmpty(affiliates)
+    && !isEmpty(artist)
+    && !isEmpty(genre)
+    && !isEmpty(tempo)
+    && !isEmpty(title)
+  ), [affiliates, artist, file, genre, tempo, title]);
 
   return (
     <Container>
@@ -140,14 +203,6 @@ Comments: ${comments}
         </CreditsContainer>
         <FieldContainer>
           <FieldTitle>
-            Credits
-          </FieldTitle>
-          <input
-            type="select"
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <FieldTitle>
             Upload MP3
           </FieldTitle>
           <FieldFileInput
@@ -157,11 +212,21 @@ Comments: ${comments}
           />
         </FieldContainer>
         <FieldContainer>
+          <Button
+            disabled={!canSave}
+            onClick={handleSave}
+          >
+            Download MP3
+          </Button>
+        </FieldContainer>
+        <FieldContainer>
           <FieldTitle>
             Song Title
+            <RequiredText>
+              Required
+            </RequiredText>
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setTitle}
             value={title}
           />
@@ -171,7 +236,6 @@ Comments: ${comments}
             Duration
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setDuration}
             value={duration}
           />
@@ -182,9 +246,11 @@ Comments: ${comments}
         <FieldContainer>
           <FieldTitle>
             Artist Name
+            <RequiredText>
+              Required
+            </RequiredText>
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setArtist}
             value={artist}
           />
@@ -197,7 +263,6 @@ Comments: ${comments}
             Type of Mix
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setType}
             value={type}
           />
@@ -210,7 +275,6 @@ Comments: ${comments}
             Sample Rate
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setSampleRate}
             value={sampleRate}
           />
@@ -218,9 +282,11 @@ Comments: ${comments}
         <FieldContainer>
           <FieldTitle>
             Music Genre
+            <RequiredText>
+              Required
+            </RequiredText>
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setGenre}
             value={genre}
           />
@@ -231,9 +297,11 @@ Comments: ${comments}
         <FieldContainer>
           <FieldTitle>
             Tempo
+            <RequiredText>
+              Required
+            </RequiredText>
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setTempo}
             value={tempo}
           />
@@ -241,9 +309,11 @@ Comments: ${comments}
         <FieldContainer>
           <FieldTitle>
             Composers, Affiliates, Publishing
+            <RequiredText>
+              Required
+            </RequiredText>
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setAffiliates}
             value={affiliates}
           />
@@ -256,7 +326,6 @@ Comments: ${comments}
             Artwork
           </FieldTitle>
           <FieldImageInput
-            disabled={file === null}
             onChange={setImage}
           />
         </FieldContainer>
@@ -265,7 +334,6 @@ Comments: ${comments}
             IPI Number
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setIpi}
             value={ipi}
           />
@@ -278,7 +346,6 @@ Comments: ${comments}
             Splits/Shares
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setSplits}
             value={splits}
           />
@@ -291,7 +358,6 @@ Comments: ${comments}
             Clearance from all songwriters and publishers
           </FieldTitle>
           <FieldCheckboxInput
-            disabled={file === null}
             type="checkbox"
             onChange={handleClearance}
             value={clearance}
@@ -302,7 +368,6 @@ Comments: ${comments}
             One-stop Shop
           </FieldTitle>
           <FieldCheckboxInput
-            disabled={file === null}
             type="checkbox"
             onChange={handleOneStop}
             value={oneStop}
@@ -313,7 +378,6 @@ Comments: ${comments}
             PRL Work Number
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setPrl}
             value={prl}
           />
@@ -323,7 +387,6 @@ Comments: ${comments}
             ISWC Number
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setIswc}
             value={iswc}
           />
@@ -333,7 +396,6 @@ Comments: ${comments}
             ISRC Number
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setIsrc}
             value={isrc}
           />
@@ -343,7 +405,6 @@ Comments: ${comments}
             Contact Name
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setContactName}
             value={contactName}
           />
@@ -353,7 +414,6 @@ Comments: ${comments}
             Email Address
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setEmail}
             value={email}
           />
@@ -363,7 +423,6 @@ Comments: ${comments}
             Phone Number
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setPhone}
             value={phone}
           />
@@ -373,7 +432,6 @@ Comments: ${comments}
             Comments
           </FieldTitle>
           <FieldTextInput
-            disabled={file === null}
             onChange={setComments}
             value={comments}
           />
@@ -381,12 +439,6 @@ Comments: ${comments}
             Any comments you&apos;d like about the song
           </Disclaimer>
         </FieldContainer>
-        <SaveButton
-          disabled={file === null}
-          onClick={handleSave}
-        >
-          Save MP3
-        </SaveButton>
       </FormContainer>
     </Container>
   );
@@ -423,12 +475,13 @@ const FormContainer = styled.div`
 const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
-const FieldTitle = styled.div`
+const FieldTitle = styled(FlexGroup)`
   font-weight: bold;
   margin-bottom: 5px;
+  align-items: center;
 `;
 
 const FieldFileInput = styled.input`
@@ -453,10 +506,6 @@ const FieldCheckboxInput = styled.input`
 
 `;
 
-const SaveButton = styled.button`
-  margin-top: 30px;
-`;
-
 const Disclaimer = styled.div`
   font-size: 11px;
   margin-top: 5px;
@@ -466,7 +515,7 @@ const CreditsContainer = styled(FieldContainer)`
   min-height: 30px;
   height: 30px;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
 `;
 
 const CreditsText = styled.div`
@@ -475,6 +524,12 @@ const CreditsText = styled.div`
 
 const CreditsAmount = styled.span`
   font-weight: bold;
+`;
+
+const RequiredText = styled.span`
+  font-size: 10px;
+  color: ${COLOR_RED};
+  margin-left: 10px;
 `;
 
 export default App;

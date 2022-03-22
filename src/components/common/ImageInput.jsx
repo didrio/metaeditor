@@ -24,8 +24,12 @@ function ImageInput({
 
 ImageInput.propTypes = {
   className: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+};
+
+ImageInput.defaultProps = {
+  disabled: false,
 };
 
 export default ImageInput;

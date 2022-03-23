@@ -33,7 +33,7 @@ function Profile() {
   useEffect(() => {
     if (user !== null) {
       setAffiliates(user.affiliates || '');
-      setSplits(user.split || '');
+      setSplits(user.splits || '');
       setArtist(user.artist || '');
       setProducer(user.producer || '');
       setContactName(user.name || '');

@@ -53,8 +53,16 @@ function App() {
   const user = useUser();
 
   useEffect(() => {
-    const userCredits = user?.credits ?? null;
-    setCredits(userCredits);
+    if (user !== null) {
+      setCredits(user.credits);
+      setAffiliates(user.affiliates);
+      setSplits(user.splits);
+      setArtist(user.artist);
+      setProducer(user.producer);
+      setContactName(user.name);
+      setEmail(user.email);
+      setPhone(user.phone);
+    }
   }, [user]);
 
   useEffect(() => {
@@ -262,18 +270,6 @@ function App() {
             value={title}
           />
         </FieldContainer>
-        {/* <FieldContainer>
-          <FieldTitle>
-            Duration
-          </FieldTitle>
-          <FieldTextInput
-            onChange={setDuration}
-            value={duration}
-          />
-          <Disclaimer>
-            Length of song
-          </Disclaimer>
-        </FieldContainer> */}
         <FieldContainer>
           <FieldTitle>
             Artist Name
@@ -289,27 +285,6 @@ function App() {
             Singer on the track (comma separate multiple artists)
           </Disclaimer>
         </FieldContainer>
-        {/* <FieldContainer>
-          <FieldTitle>
-            Type of Mix
-          </FieldTitle>
-          <FieldTextInput
-            onChange={setType}
-            value={type}
-          />
-          <Disclaimer>
-            Mono/Stereo/Surround
-          </Disclaimer>
-        </FieldContainer> */}
-        {/* <FieldContainer>
-          <FieldTitle>
-            Sample Rate
-          </FieldTitle>
-          <FieldTextInput
-            onChange={setSampleRate}
-            value={sampleRate}
-          />
-        </FieldContainer> */}
         <FieldContainer>
           <FieldTitle>
             Music Genre

@@ -45,6 +45,7 @@ function App() {
   const [comments, setComments] = useState('');
   const [contactName, setContactName] = useState('');
   const [credits, setCredits] = useState(false);
+  const [producer, setProducer] = useState('');
 
   const auth = useAuth();
   const firebase = useFirebase();
@@ -63,21 +64,51 @@ function App() {
   }, [auth, navigate]);
 
   const commentText = useMemo(
-    () => (
-      `
-Contact: ${contactName} ${phone} ${email}
-Clearance: ${clearance ? 'Yes' : 'No'}
-One-stop: ${oneStop ? 'Yes' : 'No'}
-Splits: ${splits}
-IPI: ${ipi}
-PRL: ${prl}
-ISWC: ${iswc}
-ISRC: ${isrc}
-Genre: ${genre}
-Comments: ${comments}
-`
-    ),
-    [clearance, oneStop, splits, ipi, prl, iswc, isrc, comments, contactName, phone, email, genre],
+    () => {
+      let text = '';
+      if (contactName) {
+        text += `\nContact Name: ${contactName}`;
+      }
+      if (phone) {
+        text += `\nContact Phone: ${phone}`;
+      }
+      if (email) {
+        text += `\nContact Email: ${email}`;
+      }
+      if (clearance) {
+        text += `\nClearance:${clearance ? 'Yes' : 'No'}`;
+      }
+      if (oneStop) {
+        text += `\nOne-stop: ${oneStop ? 'Yes' : 'No'}`;
+      }
+      if (splits) {
+        text += `\nSplits: ${splits}`;
+      }
+      if (producer) {
+        text += `\nProducer: ${producer}`;
+      }
+      if (ipi) {
+        text += `\nIPI: ${ipi}`;
+      }
+      if (prl) {
+        text += `\nPRL: ${prl}`;
+      }
+      if (iswc) {
+        text += `\nISWC: ${iswc}`;
+      }
+      if (isrc) {
+        text += `\nISRC: ${isrc}`;
+      }
+      if (genre) {
+        text += `\nGenre: ${genre}`;
+      }
+      if (comments) {
+        text += `\nComments: ${comments}`;
+      }
+      return text;
+    },
+    [clearance, oneStop, splits, ipi, prl, iswc, isrc,
+      comments, contactName, phone, email, genre, producer],
   );
 
   const handleOneStop = useCallback(() => {
@@ -323,6 +354,18 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
+            Producer
+          </FieldTitle>
+          <FieldTextInput
+            onChange={setProducer}
+            value={producer}
+          />
+          <Disclaimer>
+            Example: John Doe Merf Music publishing BMI (comma separate multiple composers)
+          </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <FieldTitle>
             Artwork
           </FieldTitle>
           <FieldImageInput
@@ -411,7 +454,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-            Email Address
+            Contact Email
           </FieldTitle>
           <FieldTextInput
             onChange={setEmail}
@@ -420,7 +463,7 @@ Comments: ${comments}
         </FieldContainer>
         <FieldContainer>
           <FieldTitle>
-            Phone Number
+            Contact Phone
           </FieldTitle>
           <FieldTextInput
             onChange={setPhone}

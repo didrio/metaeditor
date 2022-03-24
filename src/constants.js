@@ -1,14 +1,15 @@
 export const DEFAULT_USER_DATA = {
   admin: false,
-  credits: 0,
   affiliates: '',
-  splits: '',
   artist: '',
-  producer: '',
-  name: '',
-  email: '',
-  phone: '',
   comments: '',
+  contactEmail: '',
+  credits: 0,
+  email: '',
+  name: '',
+  phone: '',
+  producer: '',
+  splits: '',
 };
 
 export const ERROR_MESSAGES = {

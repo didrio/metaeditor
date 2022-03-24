@@ -37,7 +37,7 @@ function Profile() {
       setArtist(user.artist || '');
       setProducer(user.producer || '');
       setContactName(user.name || '');
-      setEmail(user.email || '');
+      setEmail(user.contactEmail || '');
       setPhone(user.phone || '');
       setComments(user.comments || '');
     }
@@ -58,7 +58,14 @@ function Profile() {
         if (!isEmpty(query?.docs ?? [])) {
           const docRef = query.docs[0];
           await docRef.ref.update({
-            artist, affiliates, splits, email, phone, comments, name: contactName, producer,
+            artist,
+            affiliates,
+            comments,
+            contactEmail: email,
+            name: contactName,
+            phone,
+            producer,
+            splits,
           });
         }
       }
@@ -189,6 +196,7 @@ const Header = styled.h1`
   display: inline;
   margin-top: 0px;
   margin-bottom: 10px;
+  font-size: 24px;
 `;
 
 const SubHeader = styled.h2`

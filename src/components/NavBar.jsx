@@ -72,8 +72,6 @@ const DropdownContainer = styled(FlexGroup)`
 
 const ProfileContainer = styled(FlexItem)`
   font-size: 19px;
-  letter-spacing: -1px;
-  text-decoration: underline;
   cursor: pointer;
 `;
 

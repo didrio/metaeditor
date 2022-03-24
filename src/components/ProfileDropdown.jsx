@@ -66,8 +66,6 @@ const AdminLink = styled(Link)`
 
 const Logout = styled(FlexGroup)`
   font-size: 19px;
-  letter-spacing: -1px;
-  text-decoration: underline;
   cursor: pointer;
 `;
 

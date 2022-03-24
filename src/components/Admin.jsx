@@ -78,6 +78,9 @@ function Admin() {
     <Container
       vertical
     >
+      <Header>
+        Landing Page Editor
+      </Header>
       <MarkdownEditor
         onChange={handleMarkdownChange}
         previewProps={{ ...previewProps }}
@@ -108,6 +111,14 @@ const PreviewText = styled(FlexGroup)`
   margin-bottom: 50px;
   font-size: 24px;
   font-weight: bold;
+`;
+
+const Header = styled.h1`
+  display: inline;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 24px;
 `;
 
 export default Admin;

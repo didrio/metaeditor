@@ -60,8 +60,9 @@ function App() {
       setArtist(user.artist);
       setProducer(user.producer);
       setContactName(user.name);
-      setEmail(user.email);
+      setEmail(user.contactEmail);
       setPhone(user.phone);
+      setComments(user.comments);
     }
   }, [user]);
 
@@ -475,6 +476,7 @@ const Header = styled.h1`
   display: inline;
   margin-top: 0px;
   margin-bottom: 10px;
+  font-size: 24px;
 `;
 
 const FormContainer = styled.div`

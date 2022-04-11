@@ -30,11 +30,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "deploy": "npm run build && firebase deploy",
+    "deploy-customer": "firebase deploy --only functions:createCustomer",
+    "deploy-subscribe": "firebase deploy --only functions:subscribe",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && firebase deploy"
+    "local": "firebase emulators:start --only functions",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [

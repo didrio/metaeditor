@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
   COLOR_DARK_GRAY,
+  COLOR_LIGHT_GRAY,
   COLOR_WHITE,
 } from '../../constants';
 
@@ -27,7 +28,6 @@ function TextInput({
 }
 
 const Container = styled.input`
-  background-color: ${COLOR_WHITE};
   border: 1px solid ${COLOR_DARK_GRAY};
   border-radius: 2px;
   box-sizing: border-box;
@@ -35,6 +35,7 @@ const Container = styled.input`
   width: 100%;
   padding: 5px 10px;
   outline: none;
+  background-color: ${({ disabled }) => (disabled ? COLOR_LIGHT_GRAY : COLOR_WHITE)};
 `;
 
 TextInput.propTypes = {

@@ -37,8 +37,6 @@ function App() {
   const [clearance, setClearance] = useState(false);
   const [oneStop, setOneStop] = useState(false);
   const [splits, setSplits] = useState('');
-  const [prl, setPrl] = useState('');
-  const [iswc, setIswc] = useState('');
   const [isrc, setIsrc] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -99,12 +97,6 @@ function App() {
       if (ipi) {
         text += `\nIPI: ${ipi}`;
       }
-      if (prl) {
-        text += `\nPRL: ${prl}`;
-      }
-      if (iswc) {
-        text += `\nISWC: ${iswc}`;
-      }
       if (isrc) {
         text += `\nISRC: ${isrc}`;
       }
@@ -116,7 +108,7 @@ function App() {
       }
       return text;
     },
-    [clearance, oneStop, splits, ipi, prl, iswc, isrc,
+    [clearance, oneStop, splits, ipi, isrc,
       comments, contactName, phone, email, genre, producer],
   );
 
@@ -211,6 +203,8 @@ function App() {
     title,
   ]);
 
+  const hasCredits = Number(credits) > 0;
+
   const canSave = useMemo(() => (
     file !== null
     && !isEmpty(affiliates)
@@ -218,7 +212,8 @@ function App() {
     && !isEmpty(genre)
     && !isEmpty(tempo)
     && !isEmpty(title)
-  ), [affiliates, artist, file, genre, tempo, title]);
+    && hasCredits
+  ), [affiliates, artist, file, genre, tempo, title, hasCredits]);
 
   return (
     <Container>
@@ -247,6 +242,7 @@ function App() {
           </FieldTitle>
           <FieldFileInput
             accept="audio/mpeg3"
+            disabled={!hasCredits}
             onChange={handleUpload}
             type="file"
           />
@@ -267,6 +263,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setTitle}
             value={title}
           />
@@ -279,6 +276,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setArtist}
             value={artist}
           />
@@ -294,6 +292,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setGenre}
             value={genre}
           />
@@ -309,6 +308,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setTempo}
             value={tempo}
           />
@@ -321,6 +321,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setAffiliates}
             value={affiliates}
           />
@@ -333,6 +334,7 @@ function App() {
             Producer
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setProducer}
             value={producer}
           />
@@ -345,6 +347,7 @@ function App() {
             Artwork
           </FieldTitle>
           <FieldImageInput
+            disabled={!hasCredits}
             onChange={setImage}
           />
         </FieldContainer>
@@ -353,6 +356,7 @@ function App() {
             IPI Number
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setIpi}
             value={ipi}
           />
@@ -365,6 +369,7 @@ function App() {
             Splits/Shares
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setSplits}
             value={splits}
           />
@@ -377,8 +382,9 @@ function App() {
             Clearance from all songwriters and publishers
           </FieldTitle>
           <FieldCheckboxInput
-            type="checkbox"
+            disabled={!hasCredits}
             onChange={handleClearance}
+            type="checkbox"
             value={clearance}
           />
         </FieldContainer>
@@ -387,27 +393,10 @@ function App() {
             One-stop Shop
           </FieldTitle>
           <FieldCheckboxInput
-            type="checkbox"
+            disabled={!hasCredits}
             onChange={handleOneStop}
+            type="checkbox"
             value={oneStop}
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <FieldTitle>
-            PRL Work Number
-          </FieldTitle>
-          <FieldTextInput
-            onChange={setPrl}
-            value={prl}
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <FieldTitle>
-            ISWC Number
-          </FieldTitle>
-          <FieldTextInput
-            onChange={setIswc}
-            value={iswc}
           />
         </FieldContainer>
         <FieldContainer>
@@ -415,6 +404,7 @@ function App() {
             ISRC Number
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setIsrc}
             value={isrc}
           />
@@ -424,6 +414,7 @@ function App() {
             Contact Name
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setContactName}
             value={contactName}
           />
@@ -433,6 +424,7 @@ function App() {
             Contact Email
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setEmail}
             value={email}
           />
@@ -442,6 +434,7 @@ function App() {
             Contact Phone
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setPhone}
             value={phone}
           />
@@ -451,6 +444,7 @@ function App() {
             Comments
           </FieldTitle>
           <FieldTextInput
+            disabled={!hasCredits}
             onChange={setComments}
             value={comments}
           />
@@ -469,7 +463,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   color: ${COLOR_BLACK};
-  font-size: 14px
+  font-size: 14px;
 `;
 
 const Header = styled.h1`

@@ -13,6 +13,7 @@
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
     "firebase": "^9.6.9",
+    "hamburger-react": "^2.5.0",
     "lodash": "^4.17.21",
     "music-metadata-browser": "^2.5.4",
     "normalize.css": "^8.0.1",
@@ -31,7 +32,8 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "deploy": "npm run build && firebase deploy",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy-all": "npm run build && firebase deploy",
     "deploy-customer": "firebase deploy --only functions:createCustomer",
     "deploy-subscribe": "firebase deploy --only functions:subscribe",
     "eject": "react-scripts eject",

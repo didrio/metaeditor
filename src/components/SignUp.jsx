@@ -23,14 +23,14 @@ import { getErrorMessage } from '../utils';
 import useAuth from '../hooks/useAuth';
 
 function SignUp() {
-  const [email, setEmail] = useState('1@testtest.com');
-  const [password, setPassword] = useState('123askljd');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [cNumber, setCNumber] = useState('4242424242424242');
   const [cMonth, setCMonth] = useState('2');
   const [cYear, setCYear] = useState('2024');
   const [cCode, setCCode] = useState('123');
   const [errorMessage, setErrorMessage] = useState('');
-  const [tier, setTier] = useState(1);
+  const [tier, setTier] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const auth = useAuth();

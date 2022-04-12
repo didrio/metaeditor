@@ -29,5 +29,8 @@ export const HTTP_POST_OPTIONS = {
   'Content-Type': 'application/json',
 };
 
-export const CREATE_CUSTOMER_ENDPOINT = 'http://localhost:5001/mymetadata-380af/us-central1/createCustomer';
-export const SUBSCRIBE_ENDPOINT = 'http://localhost:5001/mymetadata-380af/us-central1/subscribe';
+export const CREATE_CUSTOMER_ENDPOINT = (
+  window?.location?.hostname?.includes('localhost')
+    ? 'http://localhost:5001/mymetadata-380af/us-central1/createCustomer'
+    : 'https://us-central1-mymetadata-380af.cloudfunctions.net/createCustomer'
+);

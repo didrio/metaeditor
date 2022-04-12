@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import Hamburger from 'hamburger-react';
 import FlexGroup from './common/FlexGroup';
 import FlexItem from './common/FlexItem';
 import RouterLink from './common/RouterLink';
@@ -12,23 +13,21 @@ function NavBar() {
   const [dropdownActive, setDropdownActive] = useState(false);
   const auth = useAuth();
 
-  const handleMouseEnter = () => {
-    setDropdownActive(true);
+  const handleToggle = () => {
+    setDropdownActive((prev) => !prev);
   };
 
-  const handleMouseLeave = () => {
+  const handleClose = () => {
     setDropdownActive(false);
   };
 
   return (
     auth ? (
-      <Container
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <ProfileContainer>
-          Profile
-        </ProfileContainer>
+      <Container>
+        <Hamburger
+          toggle={handleToggle}
+          toggled={dropdownActive}
+        />
         <DropdownContainer
           active={dropdownActive}
         >
@@ -38,7 +37,9 @@ function NavBar() {
     ) : (
       <Container>
         <FlexGroup>
-          <FlexItem>
+          <FlexItem
+            onClick={handleClose}
+          >
             <Link to="/login">Login</Link>
           </FlexItem>
           <FlexItem>
@@ -68,11 +69,6 @@ const DropdownContainer = styled(FlexGroup)`
   top: 50px;
   width: 300px;
   display: ${getDropdownHeight};
-`;
-
-const ProfileContainer = styled(FlexItem)`
-  font-size: 19px;
-  cursor: pointer;
 `;
 
 export default NavBar;

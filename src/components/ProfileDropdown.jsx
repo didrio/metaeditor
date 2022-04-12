@@ -33,12 +33,12 @@ function ProfileDropdown() {
       <Link
         to="app"
       >
-        Meta Data Editor
+        Metadata Tool
       </Link>
       <Link
         to="profile"
       >
-        Edit Profile
+        My Profile
       </Link>
       <Logout
         onClick={handleLogout}

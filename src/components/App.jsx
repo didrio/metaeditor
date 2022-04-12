@@ -25,6 +25,8 @@ Downloading the .mp3 file will use 1 of your credits.
 Ensure all your fields are correct before downloading.
 `;
 
+const getBoolValue = (value) => (value === true ? 'Yes' : 'No');
+
 function App() {
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
@@ -34,7 +36,7 @@ function App() {
   const [tempo, setTempo] = useState('');
   const [affiliates, setAffiliates] = useState('');
   const [ipi, setIpi] = useState('');
-  const [clearance, setClearance] = useState(false);
+  const [clearance, setClearance] = useState(true);
   const [oneStop, setOneStop] = useState(false);
   const [splits, setSplits] = useState('');
   const [isrc, setIsrc] = useState('');
@@ -44,6 +46,7 @@ function App() {
   const [contactName, setContactName] = useState('');
   const [credits, setCredits] = useState(false);
   const [producer, setProducer] = useState('');
+  const [tier, setTier] = useState(null);
 
   const auth = useAuth();
   const firebase = useFirebase();
@@ -61,6 +64,7 @@ function App() {
       setEmail(user.contactEmail);
       setPhone(user.phone);
       setComments(user.comments);
+      setTier(user.tier);
     }
   }, [user]);
 
@@ -70,47 +74,36 @@ function App() {
     }
   }, [auth, navigate]);
 
-  const commentText = useMemo(
-    () => {
-      let text = '';
-      if (contactName) {
-        text += `\nContact Name: ${contactName}`;
-      }
-      if (phone) {
-        text += `\nContact Phone: ${phone}`;
-      }
-      if (email) {
-        text += `\nContact Email: ${email}`;
-      }
-      if (clearance) {
-        text += `\nClearance:${clearance ? 'Yes' : 'No'}`;
-      }
-      if (oneStop) {
-        text += `\nOne-stop: ${oneStop ? 'Yes' : 'No'}`;
-      }
-      if (splits) {
-        text += `\nSplits: ${splits}`;
-      }
-      if (producer) {
-        text += `\nProducer: ${producer}`;
-      }
-      if (ipi) {
-        text += `\nIPI: ${ipi}`;
-      }
-      if (isrc) {
-        text += `\nISRC: ${isrc}`;
-      }
-      if (genre) {
-        text += `\nGenre: ${genre}`;
-      }
-      if (comments) {
-        text += `\nComments: ${comments}`;
-      }
-      return text;
-    },
-    [clearance, oneStop, splits, ipi, isrc,
-      comments, contactName, phone, email, genre, producer],
-  );
+  const labels = useMemo(() => ([
+    ['Title', title],
+    ['Artist', artist],
+    ['Contact Name', contactName],
+    ['Contact Phone', phone],
+    ['Contact Email', email],
+    ['Affiliates', affiliates],
+    ['Clearance', clearance],
+    ['One-stop', oneStop],
+    ['Splits', splits],
+    ['Producer', producer],
+    ['IPI', ipi],
+    ['ISRC', isrc],
+    ['Genre', genre],
+    ['Tempo', tempo],
+    ['Comments', comments],
+  ]), [title, artist, tempo, clearance, oneStop, splits, ipi, isrc,
+    comments, contactName, phone, email, genre, producer, affiliates]);
+
+  const commentText = useMemo(() => (
+    labels
+      .filter(([label]) => (
+        label !== 'Title'
+        && label !== 'Artist'
+        && label !== 'Tempo'
+      ))
+      .reduce((prev, [label, value]) => (
+        `${prev}\n${label}: ${typeof value === 'boolean' ? getBoolValue(value) : value}`
+      ), '')
+  ), [labels]);
 
   const handleOneStop = useCallback(() => {
     setOneStop((prev) => !prev);
@@ -203,6 +196,17 @@ function App() {
     title,
   ]);
 
+  const handleCsv = useCallback(() => {
+    let csvData = 'data:text/csv;charset=utf-8,';
+    const header = `${labels.map(([label]) => label).join(',')}\n`;
+    const values = labels.map(([, value]) => (
+      typeof value === 'boolean' ? getBoolValue(value) : value
+    )).join(',');
+    csvData = csvData + header + values;
+    const encodedUri = encodeURI(csvData);
+    window.open(encodedUri);
+  }, [labels]);
+
   const hasCredits = Number(credits) > 0;
 
   const canSave = useMemo(() => (
@@ -247,14 +251,22 @@ function App() {
             type="file"
           />
         </FieldContainer>
-        <FieldContainer>
+        <ButtonContainer>
           <Button
             disabled={!canSave}
             onClick={handleSave}
           >
             Download MP3
           </Button>
-        </FieldContainer>
+          {tier !== 3 ? null : (
+            <Button
+              disabled={!canSave}
+              onClick={handleCsv}
+            >
+              Download CSV
+            </Button>
+          )}
+        </ButtonContainer>
         <FieldContainer>
           <FieldTitle>
             Song Title
@@ -382,10 +394,10 @@ function App() {
             Clearance from all songwriters and publishers
           </FieldTitle>
           <FieldCheckboxInput
+            checked={clearance}
             disabled={!hasCredits}
             onChange={handleClearance}
             type="checkbox"
-            value={clearance}
           />
         </FieldContainer>
         <FieldContainer>
@@ -393,10 +405,10 @@ function App() {
             One-stop Shop
           </FieldTitle>
           <FieldCheckboxInput
+            checked={oneStop}
             disabled={!hasCredits}
             onChange={handleOneStop}
             type="checkbox"
-            value={oneStop}
           />
         </FieldContainer>
         <FieldContainer>
@@ -491,6 +503,13 @@ const FieldContainer = styled.div`
   flex-direction: column;
   margin-bottom: 40px;
   margin-top: 30px;
+`;
+
+const ButtonContainer = styled(FieldContainer)`
+  flex-direction: row;
+  & > button {
+    margin-right: 20px;
+  }
 `;
 
 const FieldTitle = styled(FlexGroup)`

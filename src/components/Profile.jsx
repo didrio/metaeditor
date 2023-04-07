@@ -11,7 +11,6 @@ import Button from './common/Button';
 import useAuth from '../hooks/useAuth';
 import useUser from '../hooks/useUser';
 import {
-  COLOR_BLACK,
   COLOR_LIGHT_GRAY,
 } from '../constants';
 
@@ -80,13 +79,6 @@ function Profile() {
       </Header>
       <FormContainer>
         <FieldContainer>
-          <Button
-            onClick={handleSave}
-          >
-            Save
-          </Button>
-        </FieldContainer>
-        <FieldContainer>
           <SubHeader>
             Set Default Values:
           </SubHeader>
@@ -96,6 +88,7 @@ function Profile() {
             Artist Name
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setArtist}
             value={artist}
           />
@@ -108,6 +101,7 @@ function Profile() {
             Composers, Affiliates, Publishing
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setAffiliates}
             value={affiliates}
           />
@@ -120,6 +114,7 @@ function Profile() {
             Producer
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setProducer}
             value={producer}
           />
@@ -132,6 +127,7 @@ function Profile() {
             Splits/Shares
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setSplits}
             value={splits}
           />
@@ -144,6 +140,7 @@ function Profile() {
             Contact Name
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setContactName}
             value={contactName}
           />
@@ -153,6 +150,7 @@ function Profile() {
             Contact Email
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setEmail}
             value={email}
           />
@@ -162,6 +160,7 @@ function Profile() {
             Contact Phone
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setPhone}
             value={phone}
           />
@@ -171,12 +170,20 @@ function Profile() {
             Comments
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             onChange={setComments}
             value={comments}
           />
           <Disclaimer>
             Any comments you&apos;d like about the song
           </Disclaimer>
+        </FieldContainer>
+        <FieldContainer>
+          <Button
+            onClick={handleSave}
+          >
+            Save
+          </Button>
         </FieldContainer>
       </FormContainer>
     </Container>
@@ -188,8 +195,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  color: ${COLOR_BLACK};
   font-size: 14px
+  color: #a70003;
 `;
 
 const Header = styled.h1`
@@ -197,11 +204,12 @@ const Header = styled.h1`
   margin-top: 0px;
   margin-bottom: 10px;
   font-size: 24px;
+  color: #a70003;
 `;
 
 const SubHeader = styled.h2`
   margin: 0;
-  margin-bottom: -15px;
+  margin-bottom: 10px;
 `;
 
 const FormContainer = styled.div`
@@ -215,6 +223,7 @@ const FormContainer = styled.div`
   align-items: center;
   margin-bottom: 60px;
   margin-top: 20px;
+  color: #a70003;
 `;
 
 const FieldContainer = styled.div`
@@ -226,8 +235,11 @@ const FieldContainer = styled.div`
 
 const FieldTitle = styled(FlexGroup)`
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   align-items: center;
+  color: #a70003;
+  margin-left: 5px;
+  font-size: 16px;
 `;
 
 const FieldTextInput = styled(TextInput)`
@@ -238,8 +250,10 @@ const FieldTextInput = styled(TextInput)`
 `;
 
 const Disclaimer = styled.div`
+  color: #a70003;
   font-size: 11px;
-  margin-top: 5px;
+  margin-top: 10px;
+  font-weight: 500;
 `;
 
 export default Profile;

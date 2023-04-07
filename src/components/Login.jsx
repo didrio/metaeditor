@@ -75,19 +75,23 @@ function SignUp() {
         {errorMessage}
       </ErrorMessage>
       <Label>
-        Email
+        Enter Email
       </Label>
       <TextInput
+        hasBorder
         onChange={handleEmailChange}
+        placeholder="you@mymusicmetadata.com"
         type="email"
         value={email}
       />
       <Spacer />
       <Label>
-        Password
+        Enter Password
       </Label>
       <TextInput
+        hasBorder
         onChange={handlePasswordChange}
+        placeholder="********"
         type="password"
         value={password}
       />
@@ -102,22 +106,26 @@ function SignUp() {
 }
 
 const Container = styled(FlexGroup)`
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   margin-top: 30px;
   padding-left: 25%;
   padding-right: 25%;
+  height: 700px;
+  width: 400px;
 `;
 
 const Label = styled(FlexGroup)`
+  color: #a70003;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
-  text-transform: uppercase;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  margin-left: 5px;
 `;
 
 const Spacer = styled.div`
-  height: 40px;
+  height: 35px;
 `;
 
 export default SignUp;

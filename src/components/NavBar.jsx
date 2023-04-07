@@ -37,13 +37,16 @@ function NavBar() {
     ) : (
       <Container>
         <FlexGroup>
+          <FlexItem>
+            <Link to="/">What We Do</Link>
+          </FlexItem>
           <FlexItem
             onClick={handleClose}
           >
             <Link to="/login">Login</Link>
           </FlexItem>
           <FlexItem>
-            <Link to="/signup">Sign up</Link>
+            <Link to="/signup">Register</Link>
           </FlexItem>
         </FlexGroup>
       </Container>
@@ -52,15 +55,16 @@ function NavBar() {
 }
 
 const Container = styled(FlexGroup)`
+  color: #a70003;
   position: relative;
   align-items: center;
   justify-content: flex-end;
-  height: 100%;
-  width: 200px;
+  height: 130px;
 `;
 
 const Link = styled(RouterLink)`
-  margin-left: 15px;
+  color: #a70003;
+  margin-left: 20px;
 `;
 
 const DropdownContainer = styled(FlexGroup)`

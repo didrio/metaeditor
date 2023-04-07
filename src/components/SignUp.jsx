@@ -11,11 +11,7 @@ import FlexItem from './common/FlexItem';
 import LoadingAnimation from './common/LoadingAnimation';
 import {
   CREATE_CUSTOMER_ENDPOINT,
-  COLOR_BLACK,
-  COLOR_DARK_GRAY,
-  COLOR_LIGHT_GRAY,
   COLOR_MID_GRAY,
-  COLOR_WHITE,
   DEFAULT_USER_DATA,
   HTTP_POST_OPTIONS,
 } from '../constants';
@@ -180,9 +176,9 @@ function SignUp() {
       <TierContainer
         vertical
       >
-        <FlexItem>
+        <SelectTierText>
           Select a tier:
-        </FlexItem>
+        </SelectTierText>
         <TiersContainer>
           <TierItem
             onClick={handleTierSelect(1)}
@@ -238,7 +234,9 @@ function SignUp() {
           Email
         </Label>
         <TextInput
+          hasBorder
           onChange={handleEmailChange}
+          placeholder="you@mymusicmetadata.com"
           type="email"
           value={email}
         />
@@ -247,7 +245,9 @@ function SignUp() {
           Password
         </Label>
         <TextInput
+          hasBorder
           onChange={handlePasswordChange}
+          placeholder="********"
           type="password"
           value={password}
         />
@@ -256,7 +256,9 @@ function SignUp() {
           Credit Card Number
         </Label>
         <TextInput
+          hasBorder
           onChange={handleCNumberChange}
+          placeholder="1244 1244 1244 1244"
           value={cNumber}
         />
         <Spacer />
@@ -264,7 +266,9 @@ function SignUp() {
           Credit Card Expiry Month
         </Label>
         <TextInput
+          hasBorder
           onChange={handleCMonthChange}
+          placeholder="01"
           value={cMonth}
         />
         <Spacer />
@@ -272,7 +276,9 @@ function SignUp() {
           Credit Card Expiry Year
         </Label>
         <TextInput
+          hasBorder
           onChange={handleCYearChange}
+          placeholder="24"
           value={cYear}
         />
         <Spacer />
@@ -280,7 +286,9 @@ function SignUp() {
           Credit Card CVC
         </Label>
         <TextInput
+          hasBorder
           onChange={handleCCodeChange}
+          placeholder="111"
           type="password"
           value={cCode}
         />
@@ -297,34 +305,28 @@ function SignUp() {
 }
 
 const Container = styled(FlexGroup)`
-  align-items: center;
-  margin-top: 30px;
+  align-items: flex-start;
+  justify-content: center;
   padding-left: 25%;
   padding-right: 25%;
+  height: 700px;
 `;
 
 const Label = styled(FlexGroup)`
+  color: #a70003;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
-  text-transform: uppercase;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  margin-left: 5px;
 `;
 
 const Spacer = styled.div`
-  height: 40px;
+  height: 35px;
 `;
 
 const TierContainer = styled(FlexGroup)`
-  min-width: 70%;
-  max-width: 95%;
-  background-color: ${COLOR_LIGHT_GRAY};
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
-  margin-bottom: 40px;
-  margin-top: 20px;
 `;
 
 const TiersContainer = styled(FlexGroup)`
@@ -334,6 +336,7 @@ const TiersContainer = styled(FlexGroup)`
 
 const TierItem = styled(FlexGroup)`
   margin-top: 20px;
+  margin-right: 20px;
   min-width: 200px;
   flex-direction: column;
   background-color: ${COLOR_MID_GRAY};
@@ -341,13 +344,12 @@ const TierItem = styled(FlexGroup)`
   padding: 20px;
   border-radius: 5px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
   cursor: pointer;
-  background-color: ${({ selected }) => (selected ? COLOR_DARK_GRAY : COLOR_MID_GRAY)};
-  color: ${({ selected }) => (selected ? COLOR_WHITE : COLOR_BLACK)};
+  background-color: ${({ selected }) => (selected ? '#a70003' : '#e3223c')};
+  color: white;
 
   &:hover {
-    background-color: ${COLOR_DARK_GRAY};
+    background-color: #e3223cbb;
     color: white;
   }
 `;
@@ -356,6 +358,12 @@ const LoadingContainer = styled(FlexGroup)`
   width: 100%;
   justify-content: center;
   margin-top: 100px;
+`;
+
+const SelectTierText = styled(FlexGroup)`
+  color: #a70003;
+  font-size: 20px;
+  font-weight: 700;
 `;
 
 export default SignUp;

@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
-  COLOR_DARK_GRAY,
   COLOR_LIGHT_GRAY,
   COLOR_WHITE,
 } from '../../constants';
 
 function TextInput({
+  hasBorder,
   disabled,
   onChange,
+  placeholder,
   type,
   value,
 }) {
@@ -19,8 +20,10 @@ function TextInput({
 
   return (
     <Container
+      hasBorder={hasBorder}
       disabled={disabled}
       onChange={handleChange}
+      placeholder={placeholder}
       type={type}
       value={value}
     />
@@ -28,25 +31,36 @@ function TextInput({
 }
 
 const Container = styled.input`
-  border: 1px solid ${COLOR_DARK_GRAY};
-  border-radius: 2px;
+  color: #a70003;
+  border-radius: 12px;
+  border: ${({ hasBorder }) => (hasBorder ? '2px solid #a70003' : 'none')}};
   box-sizing: border-box;
-  height: 30px;
+  height: 40px;
   width: 100%;
-  padding: 5px 10px;
+  padding: 15px 20px;
   outline: none;
+  font-weight: 700;
   background-color: ${({ disabled }) => (disabled ? COLOR_LIGHT_GRAY : COLOR_WHITE)};
+
+  &::placeholder {
+    color: #a70003;
+    opacity: 0.45;
+  }
 `;
 
 TextInput.propTypes = {
+  hasBorder: PropTypes.bool,
   disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
   type: PropTypes.string,
   value: PropTypes.string.isRequired,
 };
 
 TextInput.defaultProps = {
+  hasBorder: false,
   disabled: false,
+  placeholder: '',
   type: 'text',
 };
 

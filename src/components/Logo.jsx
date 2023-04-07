@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import RouterLink from './common/RouterLink';
 import { COLOR_BLACK } from '../constants';
+import header from '../images/header-340-60.png';
 
 function Logo() {
   return (
     <Container
       to="/"
     >
-      My Meta Data
+      <HeaderLogo src={header} alt="header" />
     </Container>
   );
 }
@@ -20,6 +21,11 @@ const Container = styled(RouterLink)`
     font-weight: bold;
     text-decoration: none;
   }
+`;
+
+const HeaderLogo = styled.img`
+  width: 340px;
+  height: 60px;
 `;
 
 export default Logo;

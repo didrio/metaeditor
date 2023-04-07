@@ -15,7 +15,6 @@ import Button from './common/Button';
 import useAuth from '../hooks/useAuth';
 import useUser from '../hooks/useUser';
 import {
-  COLOR_BLACK,
   COLOR_LIGHT_GRAY,
   COLOR_RED,
 } from '../constants';
@@ -275,6 +274,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setTitle}
             value={title}
@@ -288,6 +288,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setArtist}
             value={artist}
@@ -304,6 +305,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setGenre}
             value={genre}
@@ -320,6 +322,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setTempo}
             value={tempo}
@@ -333,6 +336,7 @@ function App() {
             </RequiredText>
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setAffiliates}
             value={affiliates}
@@ -346,6 +350,7 @@ function App() {
             Producer
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setProducer}
             value={producer}
@@ -359,6 +364,7 @@ function App() {
             Artwork
           </FieldTitle>
           <FieldImageInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setImage}
           />
@@ -368,6 +374,7 @@ function App() {
             IPI Number
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setIpi}
             value={ipi}
@@ -381,6 +388,7 @@ function App() {
             Splits/Shares
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setSplits}
             value={splits}
@@ -416,6 +424,7 @@ function App() {
             ISRC Number
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setIsrc}
             value={isrc}
@@ -426,6 +435,7 @@ function App() {
             Contact Name
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setContactName}
             value={contactName}
@@ -436,6 +446,7 @@ function App() {
             Contact Email
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setEmail}
             value={email}
@@ -446,6 +457,7 @@ function App() {
             Contact Phone
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setPhone}
             value={phone}
@@ -456,6 +468,7 @@ function App() {
             Comments
           </FieldTitle>
           <FieldTextInput
+            hasBorder
             disabled={!hasCredits}
             onChange={setComments}
             value={comments}
@@ -474,8 +487,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  color: ${COLOR_BLACK};
   font-size: 14px;
+  color: #a70003;
 `;
 
 const Header = styled.h1`
@@ -514,8 +527,11 @@ const ButtonContainer = styled(FieldContainer)`
 
 const FieldTitle = styled(FlexGroup)`
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   align-items: center;
+  color: #a70003;
+  margin-left: 5px;
+  font-size: 16px;
 `;
 
 const FieldFileInput = styled.input`
@@ -537,12 +553,14 @@ const FieldImageInput = styled(ImageInput)`
 `;
 
 const FieldCheckboxInput = styled.input`
-
+  color: #a70003;
 `;
 
 const Disclaimer = styled.div`
+  color: #a70003;
   font-size: 11px;
-  margin-top: 5px;
+  margin-top: 10px;
+  font-weight: 500;
 `;
 
 const CreditsContainer = styled(FieldContainer)`

@@ -25,7 +25,7 @@ const Container = styled.button`
   border-radius: 5px;
   padding: 10px 25px;
   font-family: 'Lato', sans-serif;
-  font-weight: 500;
+  font-weight: 800;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -35,8 +35,8 @@ const Container = styled.button`
   7px 7px 20px 0px rgba(0,0,0,.1),
   4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
-  background-color: #89d8d3;
-  background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  background-color: #a70003;
+  background-image: linear-gradient(315deg, #a70003 0%, #e3223c 74%);
   border: none;
   z-index: 1;
 
@@ -49,14 +49,14 @@ const Container = styled.button`
     left: 0;
     z-index: -1;
     border-radius: 5px;
-    background-color: #4dccc6;
-    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    background-color: #e3223c;
+    background-image: linear-gradient(315deg, #e3223c 0%, #a70003 74%);
     box-shadow:
     -7px -7px 20px 0px #fff9,
     -4px -4px 5px 0px #fff9,
     7px 7px 20px 0px #0002,
     4px 4px 5px 0px #0001;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
   }
 
   &:enabled:hover {

@@ -9,7 +9,7 @@ import Logo from './Logo';
 import Profile from './Profile';
 import NavBar from './NavBar';
 import SignUp from './SignUp';
-import { COLOR_LIGHT_GRAY } from '../constants';
+import Footer from './Footer';
 
 function Main() {
   return (
@@ -35,35 +35,39 @@ function Main() {
             <Route path="/signup" element={<SignUp />} />
           </Routes>
         </Body>
+        <Footer />
       </Container>
     </Background>
   );
 }
 
 const Background = styled(FlexGroup)`
-  margin-left: 10vw;
-  margin-right: 10vw;
-  height: 100%;
-  width: 80vw;
-  flex-grow: 1;
+  align-items: center;
+  background-color: #fafafa;
+  width: 100vw;
 `;
 
 const Container = styled(FlexGroup)`
-  justify-content: space-betweek;
-  height: 100%;
+  align-items: center;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  box-shadow: 0px 0px 20px 0px lightgray;
+  width: 1200px;
 `;
 
 const Body = styled(FlexGroup)`
-  box-sizing: border-box;
-  padding: 30px;
+  align-items: center;
+  background-color: white;
   width: 100%;
 `;
 
 const Header = styled(FlexGroup)`
   align-items: center;
-  border-bottom: 2px solid ${COLOR_LIGHT_GRAY};
-  height: 60px;
+  background-color: white;
   justify-content: space-between;
+  padding: 0 50px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export default Main;

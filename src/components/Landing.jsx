@@ -29,9 +29,9 @@ function Landing() {
             by the right people?
           </TopTextContainer>
           <LearnMoreContainer>
-            <RouterLink to="/">
+            <RouterLink to="/publishers">
               <ButtonAlt>
-                Learn More
+                For Publishers
               </ButtonAlt>
             </RouterLink>
           </LearnMoreContainer>
@@ -64,6 +64,66 @@ function Landing() {
           </RegisterLinkContainer>
         </TopRightContainer>
       </TopContainer>
+      <InfoContainer>
+        <InfoHeader>
+          Welcome to MyMusicMetaData,
+        </InfoHeader>
+        <InfoText>
+          Your one-stop-shop for accurate and comprehensive music metadata.
+        </InfoText>
+        <InfoText>
+          Who needs music metadata? Anyone who creates and distributes music, whether you&#39;re an
+          independent artist, songwriter, a record label, or a music publisher metadata is essential to
+          managing your musical and intellectual property which are your most important assets and
+          ensures that you will get compensated for your music.
+        </InfoText>
+        <InfoText>
+          What is music metadata? It&#39;s the information that accompanies your music, including song title,
+          artist name, album name, release date, genre, and more. Having complete and accurate
+          metadata is crucial for getting your music noticed and heard by the right people.
+        </InfoText>
+      </InfoContainer>
+      <InfoAltContainer>
+        <InfoText>
+          Why is it important to have the correct music metadata? Here are three reasons:
+        </InfoText>
+        <InfoBullet>
+          • Discoverability - Correct metadata helps your music get discovered by music
+          supervisors, publishers, and digital service providers (DSPs) such as Spotify, Apple Music,
+          and Amazon Music, Youtube, etc. The more accurate and comprehensive your metadata
+          is, the easier it is for them to find and consider your music.
+        </InfoBullet>
+        <InfoBullet>
+          • Royalties - Accurate metadata ensures that you receive all the royalties you&#39;re entitled
+          to. When your music is played on radio, TV, or streaming platforms, the metadata is
+          used to track and report your earnings. If your metadata is incomplete or incorrect, you
+          risk missing out on royalties.
+        </InfoBullet>
+        <InfoBullet>
+          • Professionalism - Correct metadata demonstrates that you take your music career
+          seriously and that you&#39;re committed to presenting yourself as a professional. It also
+          ensures that your music is properly credited, which is crucial for building your
+          reputation and gaining recognition in the industry.
+        </InfoBullet>
+      </InfoAltContainer>
+      <InfoContainer>
+        <InfoText>
+          At MyMusicMetadata.com, we make it easy to enter accurate metadata for your music. Our
+          designer has created a new tool allows you to simply fill in the required information and we will
+          embed the metadata into your audio file with artwork included. This means you no longer have
+          to spend money on expensive software programs or courses to learn how to do it yourself.
+        </InfoText>
+        <InfoText>
+          With our easy-to-use tool, you can ensure that your music is properly tagged and ready to be
+          submitted to music supervisors, record labels, music publishers, social media platforms and
+          DSPs.
+        </InfoText>
+        <InfoText>
+          Don&#39;t let incorrect or incomplete metadata hold you back. Sign up at MyMusicMetadata.com
+          today and rest assured that your music is properly tagged and ready to be discovered by the
+          right people.
+        </InfoText>
+      </InfoContainer>
       <MiddleContainer
         vertical
       >
@@ -141,6 +201,43 @@ function Landing() {
 
 const Container = styled(FlexGroup)`
   width: 100%;
+`;
+
+const InfoContainer = styled(FlexGroup)`
+  background-color: #e3223c;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  padding: 20px 30px;
+
+  a {
+    color: white;
+  }
+`;
+
+const InfoAltContainer = styled(FlexGroup)`
+  background-color: #fff;
+  color: #e3223c;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  padding: 20px 30px;
+`;
+
+const InfoHeader = styled.p`
+  font-size: 30px;
+`;
+
+const InfoText = styled.p`
+  font-size: 24px;
+`;
+
+const InfoBullet = styled.p`
+  font-size: 20px;
+  margin-left: 30px;
+  color: black;
+  font-weight: 400;
 `;
 
 const TopContainer = styled(FlexGroup)`

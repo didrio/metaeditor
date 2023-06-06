@@ -10,6 +10,8 @@ import Profile from './Profile';
 import NavBar from './NavBar';
 import SignUp from './SignUp';
 import Footer from './Footer';
+import Publishers from './Publishers';
+import FAQ from './FAQ';
 
 function Main() {
   return (
@@ -33,6 +35,8 @@ function Main() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/publishers" element={<Publishers />} />
+            <Route path="/faq" element={<FAQ />} />
           </Routes>
         </Body>
         <Footer />

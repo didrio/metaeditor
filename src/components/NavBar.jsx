@@ -38,7 +38,7 @@ function NavBar() {
       <Container>
         <FlexGroup>
           <FlexItem>
-            <Link to="/">What We Do</Link>
+            <Link to="/faq">FAQ</Link>
           </FlexItem>
           <FlexItem
             onClick={handleClose}

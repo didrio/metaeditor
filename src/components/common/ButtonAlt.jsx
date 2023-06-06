@@ -19,7 +19,7 @@ function ButtonAlt({
 }
 
 const Container = styled.button`
-  width: 150px;
+  min-width: 150px;
   height: 35px;
   color: #fff;
   border-radius: 20px;
@@ -31,6 +31,7 @@ const Container = styled.button`
   background: none;
   font-size: 14px;
   text-align: center;
+  padding: 0px 30px;
 
   &:enabled:hover {
     color: #a70003;

@@ -57,6 +57,12 @@ const Container = styled(FlexGroup)`
   border-right: 1px solid lightgray;
   box-shadow: 0px 0px 20px 0px lightgray;
   width: 1200px;
+
+  @media (max-width: 1199px) {
+    & {
+        width: 100vw;
+    }
+}
 `;
 
 const Body = styled(FlexGroup)`

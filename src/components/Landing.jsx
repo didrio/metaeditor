@@ -7,7 +7,7 @@ import TextInput from './common/TextInput';
 import bg from '../images/bg.png';
 import heard from '../images/heard-1200-900.png';
 import tiers from '../images/tiers-40-430.png';
-import speaker from '../images/speaker-350-430.png';
+import grammy from '../images/grammy.png';
 
 function Landing() {
   return (
@@ -28,13 +28,6 @@ function Landing() {
           <TopTextContainer margin="0 0 85px 190px">
             by the right people?
           </TopTextContainer>
-          <LearnMoreContainer>
-            <RouterLink to="/publishers">
-              <ButtonAlt>
-                For Publishers
-              </ButtonAlt>
-            </RouterLink>
-          </LearnMoreContainer>
         </TopLeftContainer>
         <TopRightContainer vertical>
           <RegisterTextContainer>
@@ -48,11 +41,6 @@ function Landing() {
           <TextInputContainer>
             <TextInput
               placeholder="Email"
-            />
-          </TextInputContainer>
-          <TextInputContainer>
-            <TextInput
-              placeholder="Phone"
             />
           </TextInputContainer>
           <RegisterLinkContainer>
@@ -138,7 +126,7 @@ function Landing() {
                   Tier 1
                 </TierTextContainer>
                 <TierTextContainer>
-                  10 Credits
+                  10 Songs / Month
                 </TierTextContainer>
                 <TierTextContainer>
                   $10 / Month
@@ -146,7 +134,7 @@ function Landing() {
               </FlexGroup>
               <RouterLink to="/signup">
                 <ButtonAlt>
-                  Register
+                  Subscribe Now
                 </ButtonAlt>
               </RouterLink>
             </TierContainer>
@@ -157,7 +145,7 @@ function Landing() {
                   Tier 2
                 </TierTextContainer>
                 <TierTextContainer>
-                  30 Credits
+                  30 Songs / Month
                 </TierTextContainer>
                 <TierTextContainer>
                   $20 / Month
@@ -165,7 +153,7 @@ function Landing() {
               </FlexGroup>
               <RouterLink to="/signup">
                 <ButtonAlt>
-                  Register
+                  Subscribe Now
                 </ButtonAlt>
               </RouterLink>
             </TierContainer>
@@ -176,7 +164,7 @@ function Landing() {
                   Tier 3
                 </TierTextContainer>
                 <TierTextContainer>
-                  Unlimited Credits
+                  Unlimited Songs
                 </TierTextContainer>
                 <TierTextContainer>
                   $50 / Month
@@ -184,12 +172,12 @@ function Landing() {
               </FlexGroup>
               <RouterLink to="/signup">
                 <ButtonAlt>
-                  Register
+                  Subscribe Now
                 </ButtonAlt>
               </RouterLink>
             </TierContainer>
           </FlexGroup>
-          <SpeakerImage src={speaker} alt="header" />
+          <GrammyImage src={grammy} alt="header" />
         </FlexGroup>
       </MiddleContainer>
       <FlexGroup>
@@ -246,6 +234,7 @@ const TopContainer = styled(FlexGroup)`
   height: 610px;
   justify-content: center;
   align-items: center;
+  width: 1200px;
 `;
 
 const HeardImage = styled.img`
@@ -259,10 +248,15 @@ const TiersImage = styled.img`
   margin-right: 40px;
 `;
 
-const SpeakerImage = styled.img`
+const GrammyImage = styled.img`
   width: 350px;
   height: 430px;
-  margin-left: 40px;
+  margin-left: 60px;
+
+  @media (max-width: 1100px) {
+    & {
+        display: none;
+    }
 `;
 
 const MiddleContainer = styled(FlexGroup)`
@@ -298,10 +292,6 @@ const TopTextContainer = styled(FlexGroup)`
   font-size: 30px;
 
   margin: ${(props) => props.margin || '0'};
-`;
-
-const LearnMoreContainer = styled(FlexGroup)`
-  margin-left: 160px;
 `;
 
 const TopLeftContainer = styled(FlexGroup)`

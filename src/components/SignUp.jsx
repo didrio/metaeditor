@@ -21,10 +21,10 @@ import useAuth from '../hooks/useAuth';
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [cNumber, setCNumber] = useState('4242424242424242');
-  const [cMonth, setCMonth] = useState('2');
-  const [cYear, setCYear] = useState('2024');
-  const [cCode, setCCode] = useState('123');
+  const [cNumber, setCNumber] = useState('');
+  const [cMonth, setCMonth] = useState('');
+  const [cYear, setCYear] = useState('');
+  const [cCode, setCCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [tier, setTier] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
